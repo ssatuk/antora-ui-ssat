@@ -40,5 +40,10 @@ jobs:
         node-version: '12'
     - run: npm install
     - run: gulp bundle
+    - name: Push artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: UIBundle
+        path: build/ui-bundle.zip
 
 
