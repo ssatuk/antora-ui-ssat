@@ -16,14 +16,14 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Build, pack and publish the UI package
+# Build, pack and publish the UI package on commit to ssat branch
 
 name: Build-Pack
 
 on:
   push:
     branches:
-      - master
+      - ssat
 
 jobs:
   build-pack:
@@ -34,7 +34,9 @@ jobs:
     # Build the UI files
     # ==================
 
-    - uses: actions/checkout@v2
+    - uses: 
+      with:
+        ref: ssat
     - uses: actions/setup-node@v1
       with:
         node-version: '12'
