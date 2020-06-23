@@ -202,7 +202,8 @@ In this case, the bundle will include the source maps, which can be used for deb
 
 == Copyright and License
 
-Copyright (C) 2017-2019 OpenDevise Inc. and the Antora Project.
+SSAT customisations Copyright (C) 2020- SSAT (The Schools Network) Ltd.
+Underlying UI source Copyright (C) 2017-2019 OpenDevise Inc. and the Antora Project.
 
 Use of this software is granted under the terms of the https://www.mozilla.org/en-US/MPL/2.0/[Mozilla Public License Version 2.0] (MPL-2.0).
 See link:LICENSE[] to find the full license text.
