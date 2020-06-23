@@ -34,7 +34,7 @@ jobs:
     # Build the UI files
     # ==================
 
-    - uses:
+    - uses: actions/checkout@v2
       with:
         ref: ssat
     - uses: actions/setup-node@v1
