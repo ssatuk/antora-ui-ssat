@@ -4,8 +4,7 @@
  * @license MIT
  */
 
-;(function(){
-
+;(function () {
   /**
    * A convenience function for configuring and constructing
    * a new lunr Index.
@@ -38,7 +37,7 @@
    * @namespace {function} lunr
    */
   var lunr = function (config) {
-    var builder = new lunr.Builder
+    var builder = new lunr.Builder()
 
     builder.pipeline.add(
       lunr.trimmer,
@@ -54,7 +53,7 @@
     return builder.build()
   }
 
-  lunr.version = "2.3.8"
+  lunr.version = '2.3.8'
   /*!
    * lunr.utils
    * Copyright (C) 2019 Oliver Nightingale
@@ -95,8 +94,9 @@
    * @memberOf lunr.utils
    */
   lunr.utils.asString = function (obj) {
+    // eslint-disable-next-line no-void
     if (obj === void 0 || obj === null) {
-      return ""
+      return ''
     } else {
       return obj.toString()
     }
@@ -123,12 +123,12 @@
       return obj
     }
 
-    var clone = Object.create(null),
-        keys = Object.keys(obj)
+    var clone = Object.create(null)
+    var keys = Object.keys(obj)
 
     for (var i = 0; i < keys.length; i++) {
-      var key = keys[i],
-          val = obj[key]
+      var key = keys[i]
+      var val = obj[key]
 
       if (Array.isArray(val)) {
         clone[key] = val.slice()
@@ -142,7 +142,7 @@
         continue
       }
 
-      throw new TypeError("clone is not deep and does not support nested objects")
+      throw new TypeError('clone is not deep and does not support nested objects')
     }
 
     return clone
@@ -153,23 +153,23 @@
     this._stringValue = stringValue
   }
 
-  lunr.FieldRef.joiner = "/"
+  lunr.FieldRef.joiner = '/'
 
   lunr.FieldRef.fromString = function (s) {
     var n = s.indexOf(lunr.FieldRef.joiner)
 
     if (n === -1) {
-      throw "malformed field ref string"
+      throw new Error('malformed field ref string')
     }
 
-    var fieldRef = s.slice(0, n),
-        docRef = s.slice(n + 1)
+    var fieldRef = s.slice(0, n)
+    var docRef = s.slice(n + 1)
 
-    return new lunr.FieldRef (docRef, fieldRef, s)
+    return new lunr.FieldRef(docRef, fieldRef, s)
   }
 
   lunr.FieldRef.prototype.toString = function () {
-    if (this._stringValue == undefined) {
+    if (this._stringValue === undefined) {
       this._stringValue = this.fieldName + lunr.FieldRef.joiner + this.docRef
     }
 
@@ -217,7 +217,7 @@
 
     contains: function () {
       return true
-    }
+    },
   }
 
   /**
@@ -238,7 +238,7 @@
 
     contains: function () {
       return false
-    }
+    },
   }
 
   /**
@@ -260,7 +260,7 @@
    */
 
   lunr.Set.prototype.intersect = function (other) {
-    var a, b, elements, intersection = []
+    var a; var b; var elements; var intersection = []
 
     if (other === lunr.Set.complete) {
       return this
@@ -287,7 +287,7 @@
       }
     }
 
-    return new lunr.Set (intersection)
+    return new lunr.Set(intersection)
   }
 
   /**
@@ -320,7 +320,7 @@
     var documentsWithTerm = 0
 
     for (var fieldName in posting) {
-      if (fieldName == '_index') continue // Ignore the term index, its not a field
+      if (fieldName === '_index') continue // Ignore the term index, its not a field
       documentsWithTerm += Object.keys(posting[fieldName]).length
     }
 
@@ -338,7 +338,7 @@
    * @param {object} [metadata={}] - Metadata associated with this token.
    */
   lunr.Token = function (str, metadata) {
-    this.str = str || ""
+    this.str = str || ''
     this.metadata = metadata || {}
   }
 
@@ -385,7 +385,7 @@
    */
   lunr.Token.prototype.clone = function (fn) {
     fn = fn || function (s) { return s }
-    return new lunr.Token (fn(this.str, this.metadata), this.metadata)
+    return new lunr.Token(fn(this.str, this.metadata), this.metadata)
   }
   /*!
    * lunr.tokenizer
@@ -411,7 +411,7 @@
    * @see {@link lunr.Pipeline}
    */
   lunr.tokenizer = function (obj, metadata) {
-    if (obj == null || obj == undefined) {
+    if (obj == null || obj === undefined) {
       return []
     }
 
@@ -424,23 +424,22 @@
       })
     }
 
-    var str = obj.toString().toLowerCase(),
-        len = str.length,
-        tokens = []
+    var str = obj.toString().toLowerCase()
+    var len = str.length
+    var tokens = []
 
     for (var sliceEnd = 0, sliceStart = 0; sliceEnd <= len; sliceEnd++) {
-      var char = str.charAt(sliceEnd),
-          sliceLength = sliceEnd - sliceStart
+      var char = str.charAt(sliceEnd)
+      var sliceLength = sliceEnd - sliceStart
 
-      if ((char.match(lunr.tokenizer.separator) || sliceEnd == len)) {
-
+      if ((char.match(lunr.tokenizer.separator) || sliceEnd === len)) {
         if (sliceLength > 0) {
           var tokenMetadata = lunr.utils.clone(metadata) || {}
-          tokenMetadata["position"] = [sliceStart, sliceLength]
-          tokenMetadata["index"] = tokens.length
+          tokenMetadata.position = [sliceStart, sliceLength]
+          tokenMetadata.index = tokens.length
 
           tokens.push(
-            new lunr.Token (
+            new lunr.Token(
               str.slice(sliceStart, sliceEnd),
               tokenMetadata
             )
@@ -449,7 +448,6 @@
 
         sliceStart = sliceEnd + 1
       }
-
     }
 
     return tokens
@@ -462,7 +460,7 @@
    * @static
    * @see lunr.tokenizer
    */
-  lunr.tokenizer.separator = /[\s\-]+/
+  lunr.tokenizer.separator = /[\s-]+/
   /*!
    * lunr.Pipeline
    * Copyright (C) 2019 Oliver Nightingale
@@ -555,6 +553,7 @@
     var isRegistered = fn.label && (fn.label in this.registeredFunctions)
 
     if (!isRegistered) {
+      // eslint-disable-next-line max-len
       lunr.utils.warn('Function is not registered with pipeline. This may cause problems when serialising the index.\n', fn)
     }
   }
@@ -570,7 +569,7 @@
    * @returns {lunr.Pipeline}
    */
   lunr.Pipeline.load = function (serialised) {
-    var pipeline = new lunr.Pipeline
+    var pipeline = new lunr.Pipeline()
 
     serialised.forEach(function (fnName) {
       var fn = lunr.Pipeline.registeredFunctions[fnName]
@@ -614,7 +613,7 @@
     lunr.Pipeline.warnIfFunctionNotRegistered(newFn)
 
     var pos = this._stack.indexOf(existingFn)
-    if (pos == -1) {
+    if (pos === -1) {
       throw new Error('Cannot find existingFn')
     }
 
@@ -635,7 +634,7 @@
     lunr.Pipeline.warnIfFunctionNotRegistered(newFn)
 
     var pos = this._stack.indexOf(existingFn)
-    if (pos == -1) {
+    if (pos === -1) {
       throw new Error('Cannot find existingFn')
     }
 
@@ -649,7 +648,7 @@
    */
   lunr.Pipeline.prototype.remove = function (fn) {
     var pos = this._stack.indexOf(fn)
-    if (pos == -1) {
+    if (pos === -1) {
       return
     }
 
@@ -673,7 +672,7 @@
       for (var j = 0; j < tokens.length; j++) {
         var result = fn(tokens[j], j, tokens)
 
-        if (result === null || result === void 0 || result === '') continue
+        if (result === null || result === undefined || result === '') continue
 
         if (Array.isArray(result)) {
           for (var k = 0; k < result.length; k++) {
@@ -701,7 +700,7 @@
    * @returns {string[]}
    */
   lunr.Pipeline.prototype.runString = function (str, metadata) {
-    var token = new lunr.Token (str, metadata)
+    var token = new lunr.Token(str, metadata)
 
     return this.run([token]).map(function (t) {
       return t.toString()
@@ -756,7 +755,6 @@
     this.elements = elements || []
   }
 
-
   /**
    * Calculates the position within the vector to insert a given index.
    *
@@ -769,15 +767,15 @@
    */
   lunr.Vector.prototype.positionForIndex = function (index) {
     // For an empty vector the tuple can be inserted at the beginning
-    if (this.elements.length == 0) {
+    if (this.elements.length === 0) {
       return 0
     }
 
-    var start = 0,
-        end = this.elements.length / 2,
-        sliceLength = end - start,
-        pivotPoint = Math.floor(sliceLength / 2),
-        pivotIndex = this.elements[pivotPoint * 2]
+    var start = 0
+    var end = this.elements.length / 2
+    var sliceLength = end - start
+    var pivotPoint = Math.floor(sliceLength / 2)
+    var pivotIndex = this.elements[pivotPoint * 2]
 
     while (sliceLength > 1) {
       if (pivotIndex < index) {
@@ -788,7 +786,7 @@
         end = pivotPoint
       }
 
-      if (pivotIndex == index) {
+      if (pivotIndex === index) {
         break
       }
 
@@ -797,7 +795,7 @@
       pivotIndex = this.elements[pivotPoint * 2]
     }
 
-    if (pivotIndex == index) {
+    if (pivotIndex === index) {
       return pivotPoint * 2
     }
 
@@ -821,7 +819,7 @@
    */
   lunr.Vector.prototype.insert = function (insertIdx, val) {
     this.upsert(insertIdx, val, function () {
-      throw "duplicate index"
+      throw new Error('duplicate index')
     })
   }
 
@@ -837,7 +835,7 @@
     this._magnitude = 0
     var position = this.positionForIndex(insertIdx)
 
-    if (this.elements[position] == insertIdx) {
+    if (this.elements[position] === insertIdx) {
       this.elements[position + 1] = fn(this.elements[position + 1], val)
     } else {
       this.elements.splice(position, 0, insertIdx, val)
@@ -852,15 +850,16 @@
   lunr.Vector.prototype.magnitude = function () {
     if (this._magnitude) return this._magnitude
 
-    var sumOfSquares = 0,
-        elementsLength = this.elements.length
+    var sumOfSquares = 0
+    var elementsLength = this.elements.length
 
     for (var i = 1; i < elementsLength; i += 2) {
       var val = this.elements[i]
       sumOfSquares += val * val
     }
 
-    return this._magnitude = Math.sqrt(sumOfSquares)
+    const result = this._magnitude = Math.sqrt(sumOfSquares)
+    return result
   }
 
   /**
@@ -870,19 +869,20 @@
    * @returns {Number}
    */
   lunr.Vector.prototype.dot = function (otherVector) {
-    var dotProduct = 0,
-        a = this.elements, b = otherVector.elements,
-        aLen = a.length, bLen = b.length,
-        aVal = 0, bVal = 0,
-        i = 0, j = 0
+    var dotProduct = 0
+    var a = this.elements; var b = otherVector.elements
+    var aLen = a.length; var bLen = b.length
+    var aVal = 0; var bVal = 0
+    var i = 0; var j = 0
 
     while (i < aLen && j < bLen) {
-      aVal = a[i], bVal = b[j]
+      aVal = a[i]
+      bVal = b[j]
       if (aVal < bVal) {
         i += 2
       } else if (aVal > bVal) {
         j += 2
-      } else if (aVal == bVal) {
+      } else if (aVal === bVal) {
         dotProduct += a[i + 1] * b[j + 1]
         i += 2
         j += 2
@@ -909,7 +909,7 @@
    * @returns {Number[]}
    */
   lunr.Vector.prototype.toArray = function () {
-    var output = new Array (this.elements.length / 2)
+    var output = new Array(this.elements.length / 2)
 
     for (var i = 1, j = 0; i < this.elements.length; i += 2, j++) {
       output[j] = this.elements[i]
