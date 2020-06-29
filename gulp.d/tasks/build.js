@@ -16,8 +16,8 @@ const postcssCalc = require('postcss-calc')
 const postcssImport = require('postcss-import')
 const postcssUrl = require('postcss-url')
 const postcssVar = require('postcss-custom-properties')
-const uglify = require('gulp-uglify')
 const vfs = require('vinyl-fs')
+const terser = require('gulp-terser')
 
 module.exports = (src, dest, preview) => () => {
   const opts = { base: src, cwd: src }
@@ -57,7 +57,7 @@ module.exports = (src, dest, preview) => () => {
   return merge(
     vfs
       .src('js/+([0-9])-*.js', { ...opts, sourcemaps })
-      .pipe(uglify())
+      .pipe(terser())
       // NOTE concat already uses stat from newest combined file
       .pipe(concat('js/site.js')),
     vfs
@@ -91,7 +91,7 @@ module.exports = (src, dest, preview) => () => {
         })
       )
       .pipe(buffer())
-      .pipe(uglify()),
+      .pipe(terser()),
     // NOTE use this statement to bundle a JavaScript library that cannot be browserified, like jQuery
     //vfs.src(require.resolve('<package-name-or-require-path>'), opts).pipe(concat('js/vendor/<library-name>.js')),
     vfs

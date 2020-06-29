@@ -62,12 +62,12 @@ vfs
     file.contents = browserify(file.relative, { basedir: 'src', detectGlobals: false }).bundle()
   }))
   .pipe(buffer()) // <2>
-  .pipe(uglify())
+  .pipe(terser())
   .pipe(gulp.dest('build'))
 ----
 <1> The tap function is used to wiretap the data in the pipe.
-<2> Wrap each streaming file in a buffer so the files can be processed by uglify.
-Uglify can only work with buffers, not streams.
+<2> Wrap each streaming file in a buffer so the files can be processed by terser.
+Terser can only work with buffers, not streams.
 
 Cum dicat #putant# ne.
 Est in <<inline,reque>> homero principes, meis deleniti mediocrem ad has.
