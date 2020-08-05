@@ -1,5 +1,8 @@
 <footer class="footer">
-  <p><a href="mailto:help@ssatuk.co.uk?subject=Documentation%20issue">Report documentation issues</a></p>
+  {{#if page.attributes.help-url}}
+    <p><a href="{{page.attributes.help-url}}">Report documentation issues</a></p>
+  {{else}}
+    <p><a href="mailto:help@ssatuk.co.uk?subject=Documentation%20issue">Report documentation issues</a></p>
+  {{/if}}
   <p>All content &copy; SSAT 2020 released under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 licence</a></p>
-
 </footer>
