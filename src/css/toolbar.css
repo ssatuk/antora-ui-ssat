@@ -64,6 +64,16 @@
   }
 }
 
+.toolbar .help-link {
+  display: block;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
 .toolbar .edit-this-page a {
+  color: var(--toolbar-muted-color);
+}
+
+.toolbar .help-link a {
   color: var(--toolbar-muted-color);
 }
