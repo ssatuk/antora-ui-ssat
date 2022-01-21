@@ -1,0 +1,49 @@
+name: Build-Pack-Antora3
+
+on:
+  push:
+    branches:
+      - antora3
+
+jobs:
+  build-pack:
+
+    runs-on: ubuntu-latest
+    steps:
+    # ==================
+    # Build the UI files
+    # ==================
+
+    - uses: actions/checkout@v2
+      with:
+        ref: ssat
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '16'
+    - run: npm install
+    - run: gulp bundle
+    - name: Push artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: UIBundle
+        path: build/ui-bundle-ant3.zip
+
+  # ==================
+  # Push to Azure Blob
+  # ==================
+  push-artifact:
+    needs: build-pack
+    runs-on: ubuntu-latest
+    steps:
+    #- uses: actions/checkout@v2
+    - uses: actions/download-artifact@v2
+      with:
+        name: UIBundle
+        path: publish
+    - name: Display structure of downloaded files
+      run: ls -R
+    - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      with:
+        source_dir: 'publish'
+        container_name: 'antora-ui-ssat'
+        connection_string: ${{ secrets.AzConnectionString }}
