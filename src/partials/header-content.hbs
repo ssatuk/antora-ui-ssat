@@ -3,7 +3,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="{{{or site.url (or siteRootUrl siteRootPath)}}}">{{site.title}}</a>
       {{#if env.SITE_SEARCH_PROVIDER}}
-        <div class="navbar-item"></div>
+        <div class="navbar-item">
           <input id="search-input" type="text" placeholder="Search the docs">
         </div>
       {{/if}}
