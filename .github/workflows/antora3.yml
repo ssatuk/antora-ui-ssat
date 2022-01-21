@@ -22,11 +22,12 @@ jobs:
         node-version: '16'
     - run: npm install
     - run: gulp bundle
+    - run: mv build/ui-bundle.zip build/ui-bundle-v3.zip
     - name: Push artifact
       uses: actions/upload-artifact@v1
       with:
         name: UIBundle
-        path: build/ui-bundle-ant3.zip
+        path: build/ui-bundle-v3.zip
 
   # ==================
   # Push to Azure Blob
