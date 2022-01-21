@@ -16,7 +16,7 @@ jobs:
 
     - uses: actions/checkout@v2
       with:
-        ref: ssat
+        ref: antora3
     - uses: actions/setup-node@v1
       with:
         node-version: '16'
